@@ -1,0 +1,149 @@
+{
+  "enemies": {
+    "goblin": {
+      "id": "goblin",
+      "name": "ゴブリン",
+      "hp": 18,
+      "mp": 0,
+      "attack": 8,
+      "defense": 4,
+      "speed": 10,
+      "exp": 12,
+      "gold": 8,
+      "sprite": "enemy_goblin",
+      "color": "#68d391",
+      "maps": ["field"],
+      "actions": [
+        {"type": "attack", "weight": 100}
+      ]
+    },
+    "bat": {
+      "id": "bat",
+      "name": "コウモリ",
+      "hp": 12,
+      "mp": 0,
+      "attack": 6,
+      "defense": 2,
+      "speed": 15,
+      "exp": 8,
+      "gold": 5,
+      "sprite": "enemy_bat",
+      "color": "#9f7aea",
+      "maps": ["field", "dungeon"],
+      "actions": [
+        {"type": "attack", "weight": 100}
+      ]
+    },
+    "wolf": {
+      "id": "wolf",
+      "name": "ダークウルフ",
+      "hp": 25,
+      "mp": 0,
+      "attack": 12,
+      "defense": 6,
+      "speed": 12,
+      "exp": 20,
+      "gold": 12,
+      "sprite": "enemy_wolf",
+      "color": "#718096",
+      "maps": ["field"],
+      "actions": [
+        {"type": "attack", "weight": 80},
+        {"type": "attack_double", "weight": 20, "multiplier": 0.7, "message": "2回攻撃！"}
+      ]
+    },
+    "skeleton": {
+      "id": "skeleton",
+      "name": "スケルトン",
+      "hp": 30,
+      "mp": 10,
+      "attack": 14,
+      "defense": 8,
+      "speed": 8,
+      "exp": 28,
+      "gold": 15,
+      "sprite": "enemy_skeleton",
+      "color": "#e2e8f0",
+      "maps": ["dungeon"],
+      "actions": [
+        {"type": "attack", "weight": 70},
+        {"type": "magic_attack", "weight": 30, "power": 15, "element": "dark", "message": "骨の呪いを放った！"}
+      ]
+    },
+    "shadow": {
+      "id": "shadow",
+      "name": "シャドウ",
+      "hp": 22,
+      "mp": 20,
+      "attack": 10,
+      "defense": 5,
+      "speed": 18,
+      "exp": 25,
+      "gold": 18,
+      "sprite": "enemy_shadow",
+      "color": "#553c9a",
+      "maps": ["dungeon"],
+      "actions": [
+        {"type": "attack", "weight": 50},
+        {"type": "magic_attack", "weight": 30, "power": 18, "element": "dark", "message": "暗黒魔法を放った！"},
+        {"type": "debuff_defense", "weight": 20, "message": "防御力を下げる呪いをかけた！"}
+      ]
+    },
+    "golem": {
+      "id": "golem",
+      "name": "ストーンゴーレム",
+      "hp": 45,
+      "mp": 0,
+      "attack": 18,
+      "defense": 15,
+      "speed": 5,
+      "exp": 40,
+      "gold": 25,
+      "sprite": "enemy_golem",
+      "color": "#a0aec0",
+      "maps": ["dungeon"],
+      "actions": [
+        {"type": "attack", "weight": 70},
+        {"type": "attack_strong", "weight": 30, "multiplier": 1.8, "message": "巨大な拳で叩きつけた！"}
+      ]
+    },
+    "vein": {
+      "id": "vein",
+      "name": "闇の王ヴェイン",
+      "hp": 200,
+      "mp": 80,
+      "attack": 28,
+      "defense": 18,
+      "speed": 14,
+      "exp": 500,
+      "gold": 200,
+      "sprite": "enemy_vein",
+      "color": "#e53e3e",
+      "isBoss": true,
+      "maps": ["dungeon"],
+      "actions": [
+        {"type": "attack", "weight": 40},
+        {"type": "magic_attack", "weight": 30, "power": 35, "element": "dark", "message": "「暗黒の炎」を放った！"},
+        {"type": "attack_strong", "weight": 20, "multiplier": 1.6, "message": "「闇の刃」で切りつけた！"},
+        {"type": "heal_self", "weight": 10, "power": 30, "message": "暗黒の力で体力を回復した！"}
+      ],
+      "phases": [
+        {"hpThreshold": 0.5, "message": "ヴェイン「まだまだ！本当の力を見せてやろう！」", "attackBoost": 1.3}
+      ]
+    }
+  },
+  "encounterGroups": {
+    "field": [
+      {"enemies": ["goblin"], "weight": 40},
+      {"enemies": ["bat"], "weight": 30},
+      {"enemies": ["wolf"], "weight": 20},
+      {"enemies": ["goblin", "goblin"], "weight": 10}
+    ],
+    "dungeon": [
+      {"enemies": ["skeleton"], "weight": 35},
+      {"enemies": ["shadow"], "weight": 30},
+      {"enemies": ["bat", "bat"], "weight": 20},
+      {"enemies": ["golem"], "weight": 15}
+    ]
+  }
+}
