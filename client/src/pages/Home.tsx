@@ -1,25 +1,50 @@
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { Streamdown } from 'streamdown';
+// ============================================================
+// Legend of Astra - Main Page
+// Design: Neo-Retro Pixel Modern
+// Entry point for the game
+// ============================================================
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
- */
-export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
+import { useEffect } from 'react';
+import { GameProvider, useGame } from '@/game/GameContext';
+import TitleScreen from '@/components/game/TitleScreen';
+import GameScreen from '@/components/game/GameScreen';
+import { GameOverScreen, GameClearScreen } from '@/components/game/EndScreens';
+
+function GameRoot() {
+  const { gameState, setMapsData, setEnemiesData, setItemsData } = useGame();
+
+  useEffect(() => {
+    // Load game data
+    Promise.all([
+      fetch('/data/maps.json').then(r => r.json()),
+      fetch('/data/enemies.json').then(r => r.json()),
+      fetch('/data/items.json').then(r => r.json()),
+    ]).then(([maps, enemies, items]) => {
+      setMapsData(maps);
+      setEnemiesData(enemies);
+      setItemsData(items);
+    }).catch(err => {
+      console.error('Failed to load game data:', err);
+    });
+  }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
-      </main>
+    <div
+      className="w-screen h-screen overflow-hidden bg-gray-950"
+      style={{ fontFamily: '"DotGothic16", monospace' }}
+    >
+      {gameState === 'title' && <TitleScreen />}
+      {(gameState === 'field' || gameState === 'battle' || gameState === 'dialog' || gameState === 'shop' || gameState === 'inn') && <GameScreen />}
+      {gameState === 'gameover' && <GameOverScreen />}
+      {gameState === 'gameclear' && <GameClearScreen />}
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <GameProvider>
+      <GameRoot />
+    </GameProvider>
   );
 }
